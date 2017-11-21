@@ -1,0 +1,49 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December")
+    var serverdate = new Date({% now "Y,n,j,G,i,s"%})
+    function padlength(what){
+	var output=(what.toString().length==1)? "0"+what : what
+	return output
+    }
+    function displaytime(){
+        serverdate.setSeconds(serverdate.getSeconds()+1)
+        var datestring=montharray[serverdate.getMonth()]+" "+padlength(serverdate.getDate())+", "+serverdate.getFullYear()
+        var timestring=padlength(serverdate.getHours())+":"+padlength(serverdate.getMinutes())+":"+padlength(serverdate.getSeconds())
+        document.getElementById("tm").innerHTML="server time: " + datestring+" "+timestring
+    }
+    window.onload=function(){
+        displaytime()
+        setInterval("displaytime()", 1000)
+    }
+</script> 
+    {% block head_jquery %}
+    {% endblock %}
+</head>
+<body>
+<p id="tm"></p>
+<div id="sidebar">
+    <ul>
+	{% if user.is_authenticated %}
+            <li id="central"><a href = "{% url 'battle:central' %}">Central Building</a></li>
+            <li id="players"><a href="{% url 'battle:players' %}">Players</a></li>
+	    <li id="messages"><a href="{% url 'battle:messages'%}">Messages</a></li>
+	    <li id="logout"><a href="{% url 'account:user_logout' %}">Logout</a></li>
+	{% else %}
+	    <li id="register"><a href="{% url 'account:register' %}">Register</a></li>
+	    <li id="login"><a href="{% url 'account:user_login' %}">Login</a></li>
+	{% endif %}
+    </ul>
+</div>
+{% block content %}
+{% endblock %}
+</body>
+</html>
+

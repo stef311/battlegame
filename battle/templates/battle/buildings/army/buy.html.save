@@ -1,0 +1,7 @@
+{% extends "base.html"%}
+{% block title %}
+    Buy Units
+{% endblock %}
+{% block content %}
+    <h1>Army Building</h1>
+    <h2>Buyings units</h2>endblock %}

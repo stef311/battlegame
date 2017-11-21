@@ -1,0 +1,14 @@
+{% extends "base.html"%}
+{% block title %}
+    Messages
+{% endblock %}
+{% block head_jquery %}
+{% endblock %}
+{% block content %}
+    <h1>Messages</h1>
+    <h2>Received Messages</h2>
+    {% include "includes/received_message_list.html" %}
+	<h2>Sent Messages</h2>
+    {% include "includes/sent_message_list.html"%}
+	<p><a href="{% url 'battle:send_message' %}">Compose</a></p>
+{% endblock %}

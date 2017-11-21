@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="sidebar">
+    <ul>
+    	<li><a href="{% url 'buildings' %}">Buildings</a></li>
+    </ul>
+</div>
+<p>server time:</p>
+<p>{{ now }}</p>
+
+{% block content %}
+{% endblock %}
+<p>END</p>
+</body>
+</html>
+

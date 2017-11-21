@@ -1,0 +1,4 @@
+{% for msg in sent %} 
+    <p><a href="{{ msg.get_absolute_url }}">{{ msg.subject }}</a> - {{ msg.timestamp }}</p>
+{% endfor %}
+

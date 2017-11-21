@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% block title %}
+    Players
+{% endblock %}
+{% block head_jquery %}
+{% endblock %}
+{% block content %}
+    <h1>Player {{ player.user }}</h1>
+    <a href="{% url 'battle:send_message' player.user.username%}">Send Message</a>
+{% endblock %}

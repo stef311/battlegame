@@ -1,0 +1,13 @@
+{% extends "base.html"%}
+{% block title %}
+    Message 
+{% endblock %}
+{% block head_jquery %}
+{% endblock %}
+{% block content %}
+    <h1>Message</h1>
+    <h2>Subject: {{ msg.subject }}</h2>
+	<h2>Body:</h2>
+    <p>{{ msg.body }}</p>
+	<p><a href="{% url 'battle:messages' %}"> Back to Messages</a></p>
+{% endblock %}

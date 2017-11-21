@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% block title %}
+    Central Building!
+{% endblock %}
+{% block head_jquery %}
+<script>
+$(document).ready(function(){
+    $("li#central").addClass("selected_from_sidebar");
+});
+</script>
+{% endblock %}
+{% block content %}
+    <h3>In order to build {{building.name}}:</h3>
+    <p>Gold Cost: {{building.gold_required}}</p>
+    <p>Time Required: {{building.time_required}}</p>
+    <hr/>
+    <p>{{building.description1}}</p>
+    <hr/>
+    <p>{{building.description1}}</p>
+    {% if user.belongings.gold >= building.gold_required %}
+        <a href="{% url 'battle:upgrade_building_done' building.name %}">Build/Upgrade</a>
+    {% else %}
+	You do not have enough gold to build/upgrade this building
+    {% endif %}
+{% endblock %}

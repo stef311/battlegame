@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% block title %}
+    Players
+{% endblock %}
+{% block head_jquery %}
+<script>
+$(document).ready(function(){
+    $("li#players").addClass("selected_from_sidebar");
+});
+</script>
+{% endblock %}
+{% block content %}
+    <h1>Players</h1>
+    {% for user in users %}
+	<p>{{ user }}</p>
+    {% endfor %}
+{% endblock %}

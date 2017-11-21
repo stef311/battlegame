@@ -1,0 +1,14 @@
+{% extends "base.html"%}
+{% block title %}
+    Buy Units
+{% endblock %}
+{% block content %}
+    <h1>Army Building</h1>
+    <h2>Training units</h2>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form }}
+	<br/>
+        <input type="submit" value="Train" />
+    </form>
+{% endblock %}

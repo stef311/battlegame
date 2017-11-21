@@ -1,0 +1,11 @@
+h2 {
+    background-color: red;
+}
+
+.selected_from_sidebar {
+    background-color: yellow;
+}
+
+.small_input{
+    width: 2em;
+}

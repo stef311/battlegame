@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% block title %}
+    My Buildings
+{% endblock %}
+{% block head_jquery %}
+<script>
+$(document).ready(function(){
+    $("li#buildings").addClass("selected_from_sidebar");
+});
+</script>
+{% endblock %}
+{% block content %}
+    <h1>Owned Buildings</h1>
+    <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
+    <p><a href="{% url 'battle:market' %}">Market</a> Level: {{ market }}</p>
+    <p><a href="{% url 'battle:central'%}">Central Building to build more buildings</a></p>
+{% endblock %}

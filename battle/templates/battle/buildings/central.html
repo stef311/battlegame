@@ -1,0 +1,51 @@
+{% extends "base.html"%}
+{% block title %}
+    Central Building!
+{% endblock %}
+{% block head_jquery %}
+<script>
+$(document).ready(function(){
+    $("li#central").addClass("selected_from_sidebar");
+});
+</script>
+{% endblock %}
+{% block content %}
+    <h1>Central Building</h1>
+
+    <h2>Owned Buildings</h2>
+    {% if army is not 0 %}
+        <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
+    {% endif %}
+
+    {% if market is not 0 %}
+        <p><a href="{% url 'battle:market' %}">Market</a> Level: {{ market }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
+    {% endif %}
+    {% if buildings_in_queue %}
+        <h2>Building Tasks</h2>
+        {% for building in buildings_in_queue %}
+	    <p>{{ building.building.name }} at {{ building.finished|date:"D d M Y H i s" }}</p>
+        {% endfor %}
+    {% endif %}
+    <h2>Trained Units</h2>
+    {% if units.warrior1 is not 0 %}
+	<p>warrior1: {{ units.warrior1 }} </p>
+    {% endif %}
+    {% if units.warrior2 is not 0 %}
+	<p>warrior2: {{ units.warrior2 }} </p>
+    {% endif %}
+    {% if units.warrior3 is not 0 %}
+	<p>warrior3: {{ units.warrior3 }} </p>
+    {% endif %}
+    <p><a href="{% url 'battle:army' %}">Train More</a></p>
+    <h2>Build More Buildings</h2>
+    {% if army == 0 %}
+    	<p><a href = "{% url 'battle:upgrade_building' 'army' %}">Build Army</a></p>
+    {% endif %}
+
+    {% if market == 0 %}
+    	<p><a href = "{% url 'battle:upgrade_building' 'market' %}">Build Market</a></p>
+    {% endif %}
+    <hr/>
+
+    <p id="tm"></p>
+{% endblock %}
