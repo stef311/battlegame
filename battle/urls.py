@@ -2,6 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    url(r"^$", views.central, name = "central"),
     url(r"^info/$", views.info, name = "info"),
     url(r"^buildings/$", views.buildings, name = "buildings"),
     url(r"^units/$", views.units, name = "units"),
@@ -9,9 +10,9 @@ urlpatterns = [
     url(r"^players/$", views.players, name = "players"),
     url(r"^players/(?P<username>[-\w]+)/$", views.player, name = "player"),
     url(r"^send_message/(?P<username>[-\w]+)/$", views.send_message, name = "send_message"),
-    url(r"^messages/$", views.messages, name = "messages"),
-	url(r"^message/(?P<msg_id>[0-9]+)/$", views.message, name = "message"),
-	url(r"^send_message/$", views.send_message, name = "send_message"),
+    url(r"^all_messages/$", views.all_messages, name = "all_messages"),
+    url(r"^message/(?P<msg_id>[0-9]+)/$", views.message, name = "message"),
+    url(r"^send_message/$", views.send_message, name = "send_message"),
     url(r"^sent_messages/$", views.sent_messages, name = "sent_messages"),
     url(r"^received_messages/$", views.received_messages, name = "received_messages"),
     url(r"^buildings/army/$", views.army, name = "army"),

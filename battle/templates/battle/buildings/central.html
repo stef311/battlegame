@@ -11,7 +11,6 @@ $(document).ready(function(){
 {% endblock %}
 {% block content %}
     <h1>Central Building</h1>
-
     <h2>Owned Buildings</h2>
     {% if army is not 0 %}
         <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
@@ -37,6 +36,10 @@ $(document).ready(function(){
 	<p>warrior3: {{ units.warrior3 }} </p>
     {% endif %}
     <p><a href="{% url 'battle:army' %}">Train More</a></p>
+    <h2>Owned Items</h2>
+    {% if items.flag is not 0 %}
+	<p>flags: {{ items.flag }}</p>
+    {% endif %}
     <h2>Build More Buildings</h2>
     {% if army == 0 %}
     	<p><a href = "{% url 'battle:upgrade_building' 'army' %}">Build Army</a></p>

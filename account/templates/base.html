@@ -28,13 +28,21 @@
     {% endblock %}
 </head>
 <body>
+    {% if messages%}
+	{% for message in messages %}
+	    <p>{{ message }}</p>
+	    {% if message.tags %}
+  	        has these tags: {{message.tags }}
+  	    {% endif %}</p>
+	{% endfor %}
+    {% endif %}
 <p id="tm"></p>
 <div id="sidebar">
     <ul>
 	{% if user.is_authenticated %}
             <li id="central"><a href = "{% url 'battle:central' %}">Central Building</a></li>
             <li id="players"><a href="{% url 'battle:players' %}">Players</a></li>
-	    <li id="messages"><a href="{% url 'battle:messages'%}">Messages</a></li>
+	    <li id="all_messages"><a href="{% url 'battle:all_messages'%}">Messages</a></li>
 	    <li id="logout"><a href="{% url 'account:user_logout' %}">Logout</a></li>
 	{% else %}
 	    <li id="register"><a href="{% url 'account:register' %}">Register</a></li>

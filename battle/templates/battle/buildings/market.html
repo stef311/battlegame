@@ -1,8 +1,13 @@
 {% extends "base.html"%}
 {% block title %}
-    Central Building
+    Market Building
 {% endblock %}
 {% block content %}
     <h1>Market Building</h1>
-    <a href = "{% url 'battle:buy_items' %}">Buy Items</a>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+	<br/>
+        <input type="submit" value="Train" />
+    </form>
 {% endblock %}

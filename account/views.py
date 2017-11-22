@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile, Belongings
 # Create your views here.
@@ -23,11 +24,14 @@ def user_login(request):
 		    profile = Profile.objects.get(user=user)
 		    profile.count += 1
  		    profile.save()
+		    messages.add_message(request, messages.INFO, "Logged in successfully")
 		    return redirect("battle:central")
 		else:
-		    return HttpResponse("Disabled Account")
+		    messages.add_message(request, messages.INFO, "The account is not active")
+		    return redirect("account:user_login")
 	    else:
-		return HttpResponse("Invalid Login")
+                messages.add_message(request, messages.INFO, "Invalid Login")
+		return redirect("account:user_login")
     else:
 	form = LoginForm()
     return render(request, "account/login.html", {"form":form})
@@ -40,20 +44,27 @@ def register(request):
 	    new_user = user_form.save(commit=False)
 	    new_user.set_password(user_form.cleaned_data['password'])
 	    new_user.save()
-	    coordinateX = random.randint(-10,10)
-	    coordinateY = random.randint(-10,10)
-	    profile = Profile.objects.create(user=new_user,
+	    valid_coordinates = False
+	    while valid_coordinates == False:
+	        coordinateX = random.randint(0,1)
+	        coordinateY = random.randint(0,1)
+	        profiles = Profile.objects.filter(coordinateX = coordinateX, coordinateY = coordinateY)
+	        if not profiles:
+		    valid_coordinates = True
+	    	    profile = Profile.objects.create(user=new_user,
 					count=0,
 					tribe=user_form.cleaned_data["tribe"],
 					coordinateX = coordinateX,
 					coordinateY = coordinateY)
-	    profile.save()
-	    belongings = Belongings.objects.create(user = new_user,
+	            profile.save()
+	            belongings = Belongings.objects.create(user = new_user,
                                                    gold = 500)
-	    belongings.save()
-             
+	            belongings.save()
+		#if profiles are full, report with email
+     
             # return render(request, 'account/register_done.html', {'new_user': new_user})
-	    return redirect("account:dashboard")
+	    messages.add_message(request, messages.INFO, "You registered successfully and can now login")
+	    return redirect("account:user_login")
     else:
 	user_form = UserRegistrationForm()
     return render(request, "account/register.html", {"user_form": user_form})
@@ -78,4 +89,5 @@ def edit(request):
 @login_required
 def user_logout(request):
     logout(request)
+    messages.add_message(request, messages.INFO, "You successfully logged out")
     return redirect("account:user_login")

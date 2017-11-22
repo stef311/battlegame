@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from django.contrib import messages
 from .forms import BuyForm, TrainForm, MessageForm
 from .models import Unit, Building, BuildingInProgress, Item, Message
 
@@ -70,6 +70,9 @@ def central(request):
     context["units"]["warrior1"] = user.belongings.warrior1
     context["units"]["warrior2"] = user.belongings.warrior2
     context["units"]["warrior3"] = user.belongings.warrior3
+    context["items"] = {}
+    context["items"]["flag"] = user.belongings.flag
+
     if now.month == 11:
         month = "November"
     context["now"] = now
@@ -85,9 +88,29 @@ def market(request):
     user = request.user
     context = {}
     context["market"] = user.belongings.market
-    print(context["market"])
-    if context["market"] > 0:
-        return render(request, "battle/buildings/market.html", context)
+    print(user.belongings.market)
+    if user.belongings.market > 0:
+	if request.method == "POST":
+	    form = BuyForm(request.POST)
+	    if form.is_valid():
+		cost = 0
+		flag_count = form.cleaned_data["flag"] if form.cleaned_data["flag"] else 0
+		flag_cost = Item.objects.get(name = "flag").gold_required
+	 	cost += flag_count * flag_cost
+		if user.belongings.gold >= cost:
+		    user.belongings.gold -= cost
+		    user.belongings.flag += flag_count
+		    messages.add_message(request, messages.INFO, "Purchace complete")
+		    return redirect("battle:central")
+		else:
+		    messages.add_message(request, messages.INFO, "Not enough gold")
+		    return redirect("battle:central")
+	    else:
+                messages.add_message(request, messages.INFO, "The form is not valid")
+                return redirect("battle:market")
+	form = BuyForm()
+	context["form"] = form
+	return render(request, "battle/buildings/market.html", context)
     else:
         return HttpResponse("cannot do this")
 
@@ -127,13 +150,13 @@ def army(request):
             form = TrainForm(request.POST)
      	    if form.is_valid():
 		cost = 0
-		warrior1_count = form.cleaned_data["warrior1"]
+		warrior1_count = form.cleaned_data["warrior1"] if form.cleaned_data["warrior1"] else 0
 		warrior1_cost = Unit.objects.get(name="warrior1").gold_required
 		cost += warrior1_count * warrior1_cost
-		warrior2_count = form.cleaned_data["warrior2"]
+		warrior2_count = form.cleaned_data["warrior2"] if form.cleaned_data["warrior2"] else 0
 		warrior2_cost = Unit.objects.get(name="warrior2").gold_required
 		cost += warrior2_count * warrior2_cost
-		warrior3_count = form.cleaned_data["warrior3"]
+		warrior3_count = form.cleaned_data["warrior3"] if form.cleaned_data["warrior3"] else 0
 		warrior3_cost = Unit.objects.get(name="warrior3").gold_required
 		cost += warrior3_count * warrior3_cost
 		if user.belongings.gold >= cost:
@@ -147,7 +170,8 @@ def army(request):
 		else:
                     return HttpResponse("Not enough gold")
 	    else:
-		return HttpResponse("form not valid")
+		messages.add_message(request, messages.INFO, "The form is not valid")
+		return redirect("battle:army")
 	form = TrainForm()
 	context["form"] = form
 	return render(request, "battle/buildings/army.html", context)
@@ -278,7 +302,7 @@ def send_message(request, username):
 	return render(request,"battle/send_message.html", context)
 
 @login_required
-def messages(request):
+def all_messages(request):
 	user = request.user
 	context = {}
 	context["user"] = user
