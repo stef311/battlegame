@@ -9,6 +9,7 @@ urlpatterns = [
     url(r"^items/$", views.items, name = "items"),
     url(r"^players/$", views.players, name = "players"),
     url(r"^players/(?P<username>[-\w]+)/$", views.player, name = "player"),
+    url(r"^attack/(?P<username>[-\w]+)/$", views.attack, name = "attack"),
     url(r"^send_message/(?P<username>[-\w]+)/$", views.send_message, name = "send_message"),
     url(r"^all_messages/$", views.all_messages, name = "all_messages"),
     url(r"^message/(?P<msg_id>[0-9]+)/$", views.message, name = "message"),

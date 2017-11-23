@@ -46,8 +46,8 @@ def register(request):
 	    new_user.save()
 	    valid_coordinates = False
 	    while valid_coordinates == False:
-	        coordinateX = random.randint(0,1)
-	        coordinateY = random.randint(0,1)
+	        coordinateX = random.randint(-1,1)
+	        coordinateY = random.randint(-1,1)
 	        profiles = Profile.objects.filter(coordinateX = coordinateX, coordinateY = coordinateY)
 	        if not profiles:
 		    valid_coordinates = True

@@ -5,11 +5,12 @@
 {% block head_jquery %}
 {% endblock %}
 {% block content %}
-    <h1>Send message</h1>
+    <h1>Attack</h1>
+    <p>defender: {{ user2.username }} {{ user2.profile.coordinateX }}/{{ user2.profile.coordinateY }}</p>
     <form action="." method="post">
         {% csrf_token %}
         {{ form.as_p }}
 	<br/>
-        <input type="submit" value="Send Message" />
+        <input type="submit" value="Attack" />
     </form>
 {% endblock %}

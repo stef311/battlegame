@@ -10,13 +10,30 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import BuyForm, TrainForm, MessageForm
-from .models import Unit, Building, BuildingInProgress, Item, Message
+from .forms import BuyForm, TrainForm, MessageForm, AttackForm
+from .models import Unit, Building, BuildingInProgress, Item, Message, Attack
 
 from account.models import Belongings, Profile
 
 
 # Create your views here.
+
+def calculate_distance(user1, user2):
+    user1X = user1.profile.coordinateX
+    user1Y = user1.profile.coordinateY
+    user2X = user2.profile.coordinateX
+    user2Y = user2.profile.coordinateY
+
+    #Manhattan
+    distance = abs(user1X-user2X) + abs(user1Y-user2Y)
+    print("distance: " + str(distance))
+    return distance
+
+def attack_player(user1, user2, time_required):
+    print(time_required)
+    time.sleep(time_required - 1)
+    u1warrior1 = user1.belongings.warrior1
+
 def level_up_building(user, building):
     time.sleep(building.time_required - 1)
     print(user)
@@ -38,7 +55,6 @@ def info(request):
     context = {}
     context["tribe"] = user_tribe
     print(user_tribe)
-    return render(request,"battle/info.html", context)
 
 @login_required
 def buildings(request):
@@ -60,12 +76,15 @@ def items(request):
 def central(request):
     user = request.user
     context = {}
+    context["user"] = user
     context["army"] = user.belongings.army
     context["market"] = user.belongings.market
     # h queue metavlhth exei ta items apo to BuildingInProgress model pou einai active
     now = datetime.datetime.now()
     buildings_in_queue = BuildingInProgress.objects.filter(user = user).filter(finished__gte=now)
     context["buildings_in_queue"] = buildings_in_queue
+    attacks_in_queue = Attack.objects.filter(attacker = user).filter(end__gte=now)
+    context["attacks_in_queue"] = attacks_in_queue
     context["units"] = {}
     context["units"]["warrior1"] = user.belongings.warrior1
     context["units"]["warrior2"] = user.belongings.warrior2
@@ -266,14 +285,14 @@ def upgrade_building_done(request, building_name):
 @login_required
 def players(request):
     user = request.user
-    users = Profile.objects.all()
+    users = User.objects.all()
     context = {}
+    context["user"] = user
     context["users"] = users
     return render(request,"battle/players.html",context)
 
 @login_required
 def player(request, username):
-    user = request.user
     player = User.objects.get(username=username)
     player = Profile.objects.get(user = player)
     context = {}
@@ -300,6 +319,44 @@ def send_message(request, username):
 	form = MessageForm()
 	context["form"] = form
 	return render(request,"battle/send_message.html", context)
+
+@login_required
+def attack(request, username):
+    user = request.user
+    defender = User.objects.get(username = username)
+    context = {}
+    context["user2"] = defender
+    if request.method == "POST":
+	form = AttackForm(request.POST)
+	if form.is_valid():
+	    warrior1 = form.cleaned_data["warrior1"]
+	    warrior2 = form.cleaned_data["warrior2"]
+	    warrior3 = form.cleaned_data["warrior3"]
+	    flag = form.cleaned_data["flag"]
+	    now = datetime.datetime.now()
+	    distance = calculate_distance(user, defender)
+	    warrior1_speed = Unit.objects.get(name="warrior1").speed
+	    warrior2_speed = Unit.objects.get(name="warrior2").speed
+	    warrior3_speed = Unit.objects.get(name="warrior3").speed
+	    smallest_speed = min(warrior1_speed, warrior2_speed, warrior3_speed)
+            print("smallest speed: " + str(smallest_speed))
+	    time_required = distance * smallest_speed
+	    now = datetime.datetime.now()
+	    finished = now + datetime.timedelta(seconds=time_required)
+	    attack = Attack.objects.create(attacker = user, defender = defender, warrior1 = warrior1,\
+					   warrior2 = warrior2, warrior3 = warrior3, begin = now, end = finished)
+	    attack.save()
+  	    attack_player(user, defender, time_required)
+
+            attacks_in_queue = Attack.objects.filter(attacker = user).filter(end__gte=now)
+	    return redirect("battle:central")
+	else:
+	    messages.add_message(request, messages.INFO, "The form is not valid")
+	    return redirect("battle:army")
+    else:
+	form = AttackForm()
+	context["form"] = form
+	return render(request, "battle/attack.html", context)
 
 @login_required
 def all_messages(request):

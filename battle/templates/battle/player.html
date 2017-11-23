@@ -5,6 +5,10 @@
 {% block head_jquery %}
 {% endblock %}
 {% block content %}
-    <h1>Player {{ player.user }}</h1>
-    <a href="{% url 'battle:send_message' player.user.username%}">Send Message</a>
+    <h1>Player {{ user2.user }}</h1>
+    <h2>Description</h2>
+    {{  user2.description }}
+    <h2>Actions</h2>
+    <p><a href="{% url 'battle:send_message' player.user.username %}">Send Message</a></p>
+    <p><a href="{% url 'battle:attack' player.user.username %}">Attack</a></p>
 {% endblock %}

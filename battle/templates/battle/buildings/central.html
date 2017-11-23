@@ -11,6 +11,7 @@ $(document).ready(function(){
 {% endblock %}
 {% block content %}
     <h1>Central Building</h1>
+    {% include "includes/gold_pop.html" %}
     <h2>Owned Buildings</h2>
     {% if army is not 0 %}
         <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
@@ -23,6 +24,10 @@ $(document).ready(function(){
         <h2>Building Tasks</h2>
         {% for building in buildings_in_queue %}
 	    <p>{{ building.building.name }} at {{ building.finished|date:"D d M Y H i s" }}</p>
+        {% endfor %}
+    <h2>Attacks in Progress</h2>
+            {% for attack in attacks_in_queue %}
+	    <p>{{ attack.user2 }} at {{ attack.finished|date:"D d M Y H i s" }}</p>
         {% endfor %}
     {% endif %}
     <h2>Trained Units</h2>

@@ -12,6 +12,6 @@ $(document).ready(function(){
 {% block content %}
     <h1>Players</h1>
     {% for user in users %}
-	<p>{{ user }}</p>
+	<p><a href="{% url 'battle:player' user %}">{{ user.username }}</a> {{ user.profile.coordinateX }}/{{ user.profile.coordinateY }} pop:{{user.profile.population}}</p>
     {% endfor %}
 {% endblock %}

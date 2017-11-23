@@ -25,6 +25,7 @@ class Building(models.Model):
     name = models.CharField(max_length = 100)
     time_required = models.IntegerField(default=10)
     gold_required = models.IntegerField(default=10)
+    population = models.IntegerField(default = 1)#each building adds 1 to population
     description1 = models.TextField()
     description2 = models.TextField()
 
@@ -59,3 +60,14 @@ class Message(models.Model):
 
     def get_absolute_url(self):
         return reverse('battle:message', args=[str(self.id)])
+
+class Attack(models.Model):
+    attacker = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='attacks_done')
+    defender = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=False, related_name = "defences_done")
+    warrior1 = models.IntegerField(default = 0)
+    warrior2 = models.IntegerField(default = 0)
+    warrior3 = models.IntegerField(default = 0)
+    flag = models.IntegerField(default = 0)
+    begin = models.DateTimeField(auto_now=True)
+    end = models.DateTimeField(blank = True)
+
