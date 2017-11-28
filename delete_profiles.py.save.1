@@ -1,0 +1,14 @@
+import os, sys
+
+# This is so Django knows where to find stuff.
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "battlegame.settings")
+
+# This is so models get loaded.
+from django.core.wsgi import get_wsgi_application from django.contrib.auth.models import User from account.models import Profile, Belongings
+
+application = get_wsgi_application()
+profiles = Profile.objects.all()
+profiles.delete()
+belongings = Belongings.objects.all()
+belongings.delete()
+userr = User

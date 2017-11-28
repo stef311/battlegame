@@ -6,10 +6,12 @@ from .models import Unit, Building, Item, BuildingInProgress, Message, Attack
 
 # Register your models here.
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ["name", "attack", "defence", "speed", "time_required"]
+    list_display = ["name", "level", "attack", "defence", "speed", "time_required",\
+                    "gold_required", "science_required", "culture_required"]
 
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ["name", "time_required", "gold_required"]
+    list_display = ["name", "level", "time_required", "gold_required",\
+                    "science_required", "culture_required"]
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = ["name", "time_required", "gold_required"]

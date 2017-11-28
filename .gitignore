@@ -1,3 +1,5 @@
+./gitignore
 battlegame/settings.py*
 battlegame/settings.pyc
 users
+notes.txt

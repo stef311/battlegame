@@ -18,7 +18,7 @@ $(document).ready(function(){
     <hr/>
     <p>{{building.description1}}</p>
     {% if user.belongings.gold >= building.gold_required %}
-        <a href="{% url 'battle:upgrade_building_done' building.name %}">Build/Upgrade</a>
+        <a href="{% url 'battle:upgrade_building_done' building.name building.level %}">Build/Upgrade</a>
     {% else %}
 	You do not have enough gold to build/upgrade this building
     {% endif %}

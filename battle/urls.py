@@ -18,10 +18,13 @@ urlpatterns = [
     url(r"^received_messages/$", views.received_messages, name = "received_messages"),
     url(r"^buildings/army/$", views.army, name = "army"),
     url(r"^buildings/market/$", views.market, name = "market"),
+    url(r"^buildings/warehouse/$", views.warehouse, name = "warehouse"),
+    url(r"^buildings/academy/$", views.academy, name = "academy"),
+    url(r"^buildings/museum/$", views.museum, name = "museum"),
     url(r"^buildings/central/$", views.central, name = "central"),
     url(r"^buildings/market/buy/$", views.buy_items, name = "buy_items"),
     url(r"^buildings/army/train/$", views.train_units, name = "train_units"),
-    url(r"^buildings/(?P<building_name>[-\w]+)/build/$", views.upgrade_building, name = "upgrade_building"),
-    url(r"^buildings/(?P<building_name>[-\w]+)/build/done/$", views.upgrade_building_done, name = "upgrade_building_done"),
+    url(r"^buildings/(?P<building_name>[-\w]+)/(?P<building_level>[0-9]+)/build/$", views.upgrade_building, name = "upgrade_building"),
+    url(r"^buildings/(?P<building_name>[-\w]+)/(?P<building_level>[0-9]+)/build/done/$", views.upgrade_building_done, name = "upgrade_building_done"),
 ]
 

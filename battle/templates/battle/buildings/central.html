@@ -11,15 +11,48 @@ $(document).ready(function(){
 {% endblock %}
 {% block content %}
     <h1>Central Building</h1>
-    {% include "includes/gold_pop.html" %}
+    {% include "includes/player_info.html" %}
     <h2>Owned Buildings</h2>
     {% if army is not 0 %}
-        <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
+        <p><a href="{% url 'battle:army' %}">Army</a> Level: {{ army }}
+        {% if army <= 2%}
+            <a href="{% url 'battle:upgrade_building' 'army' army %}">Upgrade</a>
+        {% endif %}
+        </p>
     {% endif %}
 
     {% if market is not 0 %}
-        <p><a href="{% url 'battle:market' %}">Market</a> Level: {{ market }} <a href="{% url 'battle:upgrade_building' 'army' %}">Upgrade</a></p>
+        <p><a href="{% url 'battle:market' %}">Market</a> Level: {{ market }}
+        {% if market <= 2 %}
+            <a href="{% url 'battle:upgrade_building' 'market' market %}">Upgrade</a>
+        {% endif %}
+        </p>
     {% endif %}
+
+    {% if warehouse is not 0 %}
+        <p><a href="{% url 'battle:warehouse' %}">Warehouse</a> Level: {{ warehouse }}
+        {% if warehouse <= 2 %}
+            <a href="{% url 'battle:upgrade_building' 'warehouse' warehouse %}">Upgrade</a>
+        {% endif %}
+        </p>
+    {% endif %}
+    
+    {% if academy is not 0 %}
+        <p><a href="{% url 'battle:academy' %}">Academy</a> Level: {{ academy }}
+        {% if academy <= 2 %}
+            <a href="{% url 'battle:upgrade_building' 'academy' academy %}">Upgrade</a>
+        {% endif %}
+        </p>
+    {% endif %}
+    
+    {% if museum is not 0 %}
+        <p><a href="{% url 'battle:museum' %}">Museum</a> Level: {{ museum }}
+        {% if museum <= 2 %}
+            <a href="{% url 'battle:upgrade_building' 'museum' museum %}">Upgrade</a>
+        {% endif %}
+        </p>
+    {% endif %}
+
     {% if buildings_in_queue %}
         <h2>Building Tasks</h2>
         {% for building in buildings_in_queue %}
@@ -32,26 +65,38 @@ $(document).ready(function(){
     {% endif %}
     <h2>Trained Units</h2>
     {% if units.warrior1 is not 0 %}
-	<p>warrior1: {{ units.warrior1 }} </p>
+	    <p>warrior1: {{ units.warrior1 }} </p>
     {% endif %}
     {% if units.warrior2 is not 0 %}
-	<p>warrior2: {{ units.warrior2 }} </p>
+	    <p>warrior2: {{ units.warrior2 }} </p>
     {% endif %}
     {% if units.warrior3 is not 0 %}
-	<p>warrior3: {{ units.warrior3 }} </p>
+	    <p>warrior3: {{ units.warrior3 }} </p>
     {% endif %}
     <p><a href="{% url 'battle:army' %}">Train More</a></p>
     <h2>Owned Items</h2>
     {% if items.flag is not 0 %}
-	<p>flags: {{ items.flag }}</p>
+	    <p>flags: {{ items.flag }}</p>
     {% endif %}
     <h2>Build More Buildings</h2>
     {% if army == 0 %}
-    	<p><a href = "{% url 'battle:upgrade_building' 'army' %}">Build Army</a></p>
+    	<p><a href = "{% url 'battle:upgrade_building' 'army' 1 %}">Build Army</a></p>
     {% endif %}
 
     {% if market == 0 %}
-    	<p><a href = "{% url 'battle:upgrade_building' 'market' %}">Build Market</a></p>
+    	<p><a href = "{% url 'battle:upgrade_building' 'market' 1 %}">Build Market</a></p>
+    {% endif %}
+
+    {% if academy == 0 %}
+    	<p><a href = "{% url 'battle:upgrade_building' 'academy' 1 %}">Build Academy</a></p>
+    {% endif %}
+
+    {% if warehouse == 0 %}
+        <p><a href = "{% url 'battle:upgrade_building' 'warehouse' 1 %}">Build Warehouse</a></p>
+    {% endif %}
+    
+    {% if museum == 0 %}
+        <p><a href = "{% url 'battle:upgrade_building' 'museum' 1 %}">Build Museum</a></p>
     {% endif %}
     <hr/>
 

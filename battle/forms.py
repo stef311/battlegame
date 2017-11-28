@@ -12,8 +12,8 @@ class TrainForm(forms.Form):
 
 class MessageForm(forms.ModelForm):
     class Meta:
-	model = Message
-	fields = ["recipient", "subject", "body"]
+	    model = Message
+	    fields = ["recipient", "subject", "body"]
 
 class AttackForm(forms.Form):
     warrior1 = forms.IntegerField(initial=0,required = False, label="warrior1", widget = forms.TextInput(attrs={'class': 'small_input'}))

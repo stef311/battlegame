@@ -10,34 +10,47 @@ import datetime
 
 class Unit(models.Model):
     name = models.CharField(max_length = 100)
+    level = models.IntegerField(default = 1)
     attack = models.IntegerField(default=0)
     defence = models.IntegerField(default=0)
     speed = models.IntegerField(default=0)
     time_required = models.IntegerField(default=10) # in seconds
     gold_required = models.IntegerField(default=10)
+    wood_required = models.IntegerField(default=10)
+    iron_required = models.IntegerField(default=10)
+    science_required = models.IntegerField(default=0)
+    culture_required = models.IntegerField(default=0)
+    population = models.IntegerField(default = 1)
     description1 = models.TextField()
     description2 = models.TextField()
 
     def __str__(self):
-	return "Unit {}".format(self.name)
+	    return "Unit {}".format(self.name)
 
 class Building(models.Model):
     name = models.CharField(max_length = 100)
+    level = models.IntegerField(default = 1)
     time_required = models.IntegerField(default=10)
     gold_required = models.IntegerField(default=10)
-    population = models.IntegerField(default = 1)#each building adds 1 to population
-    description1 = models.TextField()
-    description2 = models.TextField()
+    wood_required = models.IntegerField(default=10)
+    iron_required = models.IntegerField(default=10)
+    science_required = models.IntegerField(default=0)
+    culture_required = models.IntegerField(default=0)
+    population = models.IntegerField(default = 1) # each building adds 1 to population
+    description1 = models.TextField(blank=True)
+    description2 = models.TextField(blank=True)
 
     def __str__(self):
-	return "Building {}".format(self.name)
+	    return "Building {}".format(self.name)
 
 class Item(models.Model):
     name = models.CharField(max_length = 100)
     time_required = models.IntegerField(default = 0)
     gold_required = models.IntegerField(default = 0)
-    description1 = models.TextField()
-    description2 = models.TextField()
+    science_required = models.IntegerField(default=0)
+    culture_required = models.IntegerField(default=0)
+    description1 = models.TextField(blank=True)
+    description2 = models.TextField(blank=True)
 
     def __str__(self):
 	return "Item {}".format(self.name)
@@ -50,6 +63,16 @@ class BuildingInProgress(models.Model):
 
     def __str__(self):
 	return "Building {} for User {}".format(self.building, self.user)
+
+
+class UnitInProgress(models.Model):
+    unit = models.ForeignKey(Unit, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    added = models.DateTimeField(auto_now=True)
+    finished = models.DateTimeField(blank = True)
+
+    def __str__(self):
+	    return "Building {} for User {}".format(self.building, self.user)
 
 class Message(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='messages_received')
@@ -71,3 +94,4 @@ class Attack(models.Model):
     begin = models.DateTimeField(auto_now=True)
     end = models.DateTimeField(blank = True)
 
+    
